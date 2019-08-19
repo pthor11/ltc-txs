@@ -87,7 +87,7 @@ const rollback = async () => {
 
 const start = async () => {
     try {
-        const blockHeight = 2687228 //await rollback()
+        const blockHeight = await rollback()
         console.log({ blockHeight })
 
         await run(blockHeight)
