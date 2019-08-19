@@ -13,7 +13,7 @@ const run = async (blockHeight) => {
         const block = block_response.data.result
 
         if (!block) {
-            console.log(`ltc-txs is up to date`)
+            console.log(`get block height ${blockHeight} failed`)
             setTimeout(start, 1000)
             return Promise.resolve(true)
         }
@@ -64,8 +64,12 @@ const run = async (blockHeight) => {
 
         run(blockHeight + 1)
 
-    } catch (err) {
-        console.log(err)
+    } catch (error) {
+        if (error.response.data.error.code === -8) {
+            console.log(`ltc-txs is up to date`)
+        } else {
+            console.log(error.response.data)
+        }
         setTimeout(start, 1000)
     }
 
@@ -83,7 +87,7 @@ const rollback = async () => {
 
 const start = async () => {
     try {
-        const blockHeight = await rollback()
+        const blockHeight = 2687228 //await rollback()
         console.log({ blockHeight })
 
         await run(blockHeight)
